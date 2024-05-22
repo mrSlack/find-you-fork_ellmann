@@ -14,7 +14,8 @@ def generate_keypairs(num_pairs):
         pub_key = vk.to_string().hex()
         priv_key = sk.to_string().hex()
         
-        pub_keys_c.append(f"0x{pub_key[:28]}, 0x{pub_key[28:]}")
+        formatted_pub_key = ', '.join([f"0x{pub_key[i:i+2]}" for i in range(0, len(pub_key), 2)])
+        pub_keys_c.append(formatted_pub_key)
         private_keys.append(priv_key)
 
     # Save public keys in C source code format
