@@ -8,7 +8,7 @@ def generate_keypairs(num_pairs):
     private_keys = []
 
     for _ in range(num_pairs):
-        sk = SigningKey.generate(curve=NIST256p)
+        sk = SigningKey.generate(curve=NIST224pp)
         vk = sk.get_verifying_key()
         
         pub_key = vk.to_string().hex()
