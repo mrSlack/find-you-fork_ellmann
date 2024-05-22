@@ -1,6 +1,6 @@
 import os
 import sys
-from ecdsa import SigningKey, NIST256p
+from ecdsa import SigningKey, NIST224p
 import plistlib
 
 def generate_keypairs(num_pairs):
@@ -8,18 +8,18 @@ def generate_keypairs(num_pairs):
     private_keys = []
 
     for _ in range(num_pairs):
-        sk = SigningKey.generate(curve=NIST224pp)
+        sk = SigningKey.generate(curve=NIST224p)
         vk = sk.get_verifying_key()
         
         pub_key = vk.to_string().hex()
         priv_key = sk.to_string().hex()
         
-        pub_keys_c.append(f"0x{pub_key[:32]}, 0x{pub_key[32:]}")
+        pub_keys_c.append(f"0x{pub_key[:28]}, 0x{pub_key[28:]}")
         private_keys.append(priv_key)
 
     # Save public keys in C source code format
     with open("pub_keys_c.txt", "w") as pub_file:
-        pub_file.write("const uint8_t pub_keys[][32] = {\n")
+        pub_file.write("const uint8_t pub_keys[][28] = {\n")
         for key in pub_keys_c:
             pub_file.write(f"    {{{key}}},\n")
         pub_file.write("};\n")
