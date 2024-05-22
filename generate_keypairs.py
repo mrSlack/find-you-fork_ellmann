@@ -9,12 +9,14 @@ def generate_keypairs(num_pairs):
 
     for _ in range(num_pairs):
         sk = SigningKey.generate(curve=NIST224p)
-        vk = sk.get_verifying_key()
+        vk = sk.verifying_key
         
-        pub_key = vk.to_string().hex()
+        # Get the x coordinate of the uncompressed public key (28 bytes)
+        pub_key = vk.to_string()[:28]
         priv_key = sk.to_string().hex()
         
-        formatted_pub_key = ', '.join([f"0x{pub_key[i:i+2]}" for i in range(0, len(pub_key), 2)])
+        # Format the public key for C source code
+        formatted_pub_key = ', '.join([f"0x{pub_key[i]:02x}" for i in range(len(pub_key))])
         pub_keys_c.append(formatted_pub_key)
         private_keys.append(priv_key)
 
